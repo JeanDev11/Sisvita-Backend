@@ -1,0 +1,68 @@
+http://127.0.0.1:5000/
+
+** USER **
+USER = personal_g9
+PASSWORD = *********
+DATABASE = sisvita_gcj3
+HOST = dpg-cp53stocmk4c73es9di0-a.oregon-postgres.render.com
+SERVER = postgresql
+
+** CREAR EV **
+python -m venv venv
+
+** ACTIVAR EV **
+venv\Scripts\activate
+
+** DEPENDENCIAS **
+pip install -r requirements.txt
+
+** Generar el archivo requirements.txt **
+pip freeze > requirements.txt
+
+** EJECUTAR **
+flask run
+flask --app 'app' run
+
+
+NOTAS:
+- En una API RESTful, generalmente se recomienda utilizar los métodos HTTP apropiados para cada tipo de operación:
+GET para recuperar datos.
+POST para crear nuevos datos.
+PUT o PATCH para actualizar datos.
+DELETE para eliminar datos.
+Usar DELETE en lugar de POST para eliminar recursos es más semántico y sigue mejor las convenciones REST.
+- El manejo de fechas y horas debe estar en el formato correcto (ISO 8601) cuando se envían los datos a la API.
+
+
+JSON EJEMPLOS:
+
+** PERSONA **
+{
+  "nombre": "Juan",
+  "apellido": "Gomez",
+  "correo_electronico": "juan@gmail.com",
+  "contrasena": "clave_segura",
+  "telefono": "987654321",
+  "direccion": "Calle Principal 123"
+}
+
+** ESTUDIANTE **
+{
+    "persona_id": 1,
+    "fecha_nac": "2000-01-01",
+    "ciclo": "7",
+    "facultad": "Ingeniería de Sistemas e Informática",
+    "carrera": "Ingeniería de Sistemas",
+    "telefono_emergencia": "123456789"
+}
+
+** FORO **
+{
+  "persona_id": 1,
+  "fecha_hora": "2024-05-21T08:30:00",
+  "titulo_tema": "Nueva discusión sobre salud mental 2",
+  "contenido": "¡Hola a todos! Quería iniciar esta discusión para hablar sobre estrategias para manejar el estrés en tiempos difíciles. ¿Alguien tiene algún consejo para compartir?"
+}
+
+
+Probado con: PY-3.12.2
