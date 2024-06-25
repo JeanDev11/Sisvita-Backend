@@ -10,6 +10,7 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_CONNECTION
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Inicializa la extensión SQLAlchemy con la aplicación Flask
 db.init_app(app)
