@@ -2,12 +2,25 @@ from utils.ma import ma
 from model.test_resultado import TestResultado
 from schemas.usuario_schema import UsuarioSchema
 from schemas.test_schema import TestSchema
-from marshmallow import fields
+from schemas.nivel_test_schema import NivelTestSchema
+from marshmallow import fields, pre_dump
+import pytz
 
 class TestResultadoSchema(ma.Schema):
     usuario = ma.Nested(UsuarioSchema)
     test = ma.Nested(TestSchema)
-    fecha_creacion = fields.DateTime('%Y-%m-%d %H:%M:%S')
+    nivel = ma.Nested(NivelTestSchema)
+    fecha_creacion = fields.DateTime('%d-%m-%Y %H:%M:%S')
+
+    @pre_dump
+    def convert_to_local_time(self, data, **kwargs):
+        # Convertir fecha_creacion a la zona horaria de Lima
+        if data.fecha_creacion:
+            utc_zone = pytz.utc
+            lima_zone = pytz.timezone('America/Lima')
+            utc_time = data.fecha_creacion.replace(tzinfo=utc_zone)
+            data.fecha_creacion = utc_time.astimezone(lima_zone).replace(tzinfo=None)
+        return data
 
     class Meta:
         model = TestResultado
@@ -16,7 +29,8 @@ class TestResultadoSchema(ma.Schema):
                   'descripcion', 
                   'fecha_creacion', 
                   'usuario', 
-                  'test')
+                  'test',
+                  'nivel')
         
 
 testResultado_schema = TestResultadoSchema()
