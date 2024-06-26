@@ -12,7 +12,7 @@ def insert_test_resultado():
     test_id = body.get('test_id')
     usuario_id = body.get('usuario_id')
     puntaje_obtenido = body.get('puntaje_obtenido')
-    descripcion = body.get('descripcion')
+    id_nivel = body.get('id_nivel')
 
     if not test_id or not usuario_id or not puntaje_obtenido:
         result["status_code"] = 400
@@ -23,7 +23,7 @@ def insert_test_resultado():
         test_id=test_id,
         usuario_id=usuario_id,
         puntaje_obtenido=puntaje_obtenido,
-        descripcion=descripcion
+        id_nivel=id_nivel
     )
     
     db.session.add(nuevo_resultado)
@@ -34,7 +34,7 @@ def insert_test_resultado():
         "test_id": nuevo_resultado.test_id,
         "usuario_id": nuevo_resultado.usuario_id,
         "puntaje_obtenido": nuevo_resultado.puntaje_obtenido,
-        "descripcion": nuevo_resultado.descripcion,
+        "id_nivel": nuevo_resultado.id_nivel,
         "fecha_creacion": nuevo_resultado.fecha_creacion
     }
     result["status_code"] = 201
