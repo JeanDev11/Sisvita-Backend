@@ -4,4 +4,4 @@ from model.nivel_test import NivelTest
 class NivelTestSchema(ma.Schema):
     class Meta:
         model = NivelTest
-        fields = ('id_nivel', 'descripcion')
+        fields = ('id_nivel', 'descripcion', 'semaforo')

@@ -1,5 +1,6 @@
 from utils.db import db
 from dataclasses import dataclass
+from sqlalchemy.orm import relationship
 
 @dataclass
 class Usuario(db.Model):
@@ -15,7 +16,11 @@ class Usuario(db.Model):
     fecha_nac = db.Column(db.Date)
     sexo = db.Column(db.String(1))
 
-    def __init__(self, nombres, apellidos, correo_electronico, contrasena, rol, es_paciente, telefono, fecha_nac, sexo):
+    # Relación con Ubigeo
+    id_ubigeo = db.Column(db.Integer, db.ForeignKey('ubigeo.id_ubigeo', onupdate='RESTRICT', ondelete='RESTRICT'))
+    ubigeo = relationship('Ubigeo', back_populates='usuarios')
+
+    def __init__(self, nombres, apellidos, correo_electronico, contrasena, rol, es_paciente, telefono, fecha_nac, sexo, id_ubigeo):
         self.nombres = nombres
         self.apellidos = apellidos
         self.correo_electronico = correo_electronico
@@ -25,4 +30,5 @@ class Usuario(db.Model):
         self.telefono = telefono
         self.fecha_nac = fecha_nac
         self.sexo = sexo
+        self.id_ubigeo = id_ubigeo
 
