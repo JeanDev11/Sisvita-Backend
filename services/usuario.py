@@ -24,6 +24,7 @@ def insert_usuario():
     telefono = body.get('telefono')
     fecha_nac = body.get('fecha_nac')
     sexo = body.get('sexo')
+    id_ubigeo = 110501
     print(nombres, apellidos, correo_electronico, contrasena, rol, telefono)
     if not nombres or not apellidos or not correo_electronico or not contrasena or not rol or not telefono:
         result["status_code"] = 400
@@ -41,7 +42,8 @@ def insert_usuario():
         es_paciente=es_paciente,
         telefono=telefono,
         fecha_nac=fecha_nac,
-        sexo=sexo
+        sexo=sexo,
+        id_ubigeo=id_ubigeo,
     )
     
     db.session.add(nuevo_usuario)

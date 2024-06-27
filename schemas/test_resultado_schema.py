@@ -7,7 +7,8 @@ from marshmallow import fields, pre_dump
 import pytz
 
 class TestResultadoSchema(ma.Schema):
-    usuario = ma.Nested(UsuarioSchema(only=("usuario_id", "nombres","apellidos")))
+    usuario = ma.Nested(UsuarioSchema)
+    # usuario = ma.Nested(UsuarioSchema(only=("usuario_id", "nombres","apellidos")))
     test = ma.Nested(TestSchema)
     nivel = ma.Nested(NivelTestSchema)
     fecha_creacion = fields.DateTime('%d-%m-%Y %H:%M:%S')
