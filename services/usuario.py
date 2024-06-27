@@ -5,6 +5,7 @@ from model.especialista import Especialista
 from utils.db import db
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
+from schemas.usuario_schema import UsuarioSchema
 import jwt
 import datetime
 
@@ -97,6 +98,14 @@ def insert_usuario():
     result["msg"] = "Usuario registrado correctamente"
     return jsonify(result), 201
 
+@usuarios.route('/usuarios/getall', methods=['GET'])
+def get_usuariosAll():
+    usuarios = Usuario.query.all()  # Obtener todos los usuarios desde la base de datos
+
+    usuario_schema = UsuarioSchema(many=True)  # Inicializar el esquema para serializar múltiples usuarios
+    usuarios_serializados = usuario_schema.dump(usuarios)  # Serializar los resultados
+
+    return jsonify(usuarios_serializados), 200  # Devolver los usuarios serializados como JSON
 
 @usuarios.route('/usuarios/login', methods=['POST'])
 def login_usuario():

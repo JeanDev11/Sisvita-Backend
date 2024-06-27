@@ -22,7 +22,7 @@ def obtener_nivel():
 
     if nivel_ansiedad:
         # Devolver la descripción del nivel de ansiedad encontrado
-        return jsonify({'id_nivel': nivel_ansiedad.id_nivel})
+        return jsonify({'id_nivel': nivel_ansiedad.id_nivel, 'descripcion': nivel_ansiedad.descripcion})
     else:
         # Devolver un error si no se encontró un nivel de ansiedad correspondiente
         return jsonify({'error': 'No se encontró un nivel de ansiedad correspondiente'}), 404
