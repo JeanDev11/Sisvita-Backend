@@ -1,11 +1,18 @@
 from flask import Flask
 from utils.db import db
+from config import DATABASE_CONNECTION
+from flask_cors import CORS
 from services.usuario import usuarios
 from services.test import test_bp
 from services.nivel_test import nivel_test
 from services.test_resultado import test_resultado
-from config import DATABASE_CONNECTION
-from flask_cors import CORS, cross_origin
+from services.ubigeo import ubigeo_bp
+from services.especialista import especialista_bp
+from services.tipos_tratamiento import tipostratamiento_bp
+from services.tipos_diagnostico import tiposdiagnostico_bp
+from services.diagnostico import diagnostico_bp
+from services.tratamiento import tratamiento_bp
+from services.evaluacion_paciente import evaluacionpaciente_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -20,6 +27,13 @@ app.register_blueprint(usuarios)
 app.register_blueprint(test_bp)
 app.register_blueprint(nivel_test)
 app.register_blueprint(test_resultado)
+app.register_blueprint(ubigeo_bp)
+app.register_blueprint(especialista_bp)
+app.register_blueprint(tipostratamiento_bp)
+app.register_blueprint(tiposdiagnostico_bp)
+app.register_blueprint(diagnostico_bp)
+app.register_blueprint(tratamiento_bp)
+app.register_blueprint(evaluacionpaciente_bp)
 
 with app.app_context():
     # Crea todas las tablas definidas en los modelos
