@@ -6,6 +6,8 @@ class UsuarioSchema(ma.Schema):
     usuario_id = fields.Integer()
     nombres = fields.String()
     apellidos = fields.String()
+    dni = fields.String()
+    correo_electronico = fields.String()
     ubigeo = ma.Nested(UbigeoSchema)
 
     # correo_electronico = fields.Email()

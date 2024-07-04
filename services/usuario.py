@@ -22,11 +22,11 @@ def insert_usuario():
     rol = body.get('rol')
     es_paciente = body.get('es_paciente', False)
     telefono = body.get('telefono')
+    dni = body.get('dni')
     fecha_nac = body.get('fecha_nac')
     sexo = body.get('sexo')
-    id_ubigeo = 110501
-    print(nombres, apellidos, correo_electronico, contrasena, rol, telefono)
-    if not nombres or not apellidos or not correo_electronico or not contrasena or not rol or not telefono:
+    id_ubigeo = body.get('id_ubigeo')
+    if not nombres or not apellidos or not correo_electronico or not contrasena or not rol or not dni or not id_ubigeo:
         result["status_code"] = 400
         result["msg"] = "Faltan datos obligatorios"
         return jsonify(result), 400
@@ -41,6 +41,7 @@ def insert_usuario():
         rol=rol,
         es_paciente=es_paciente,
         telefono=telefono,
+        dni=dni,
         fecha_nac=fecha_nac,
         sexo=sexo,
         id_ubigeo=id_ubigeo,
