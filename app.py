@@ -2,7 +2,7 @@ from flask import Flask
 from utils.db import db
 from config import DATABASE_CONNECTION
 from flask_cors import CORS
-from services.usuario import usuarios
+from services.usuario import usuarios_bp
 from services.test import test_bp
 from services.nivel_test import nivel_test
 from services.test_resultado import test_resultado
@@ -23,7 +23,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 # Cargar todos los blueprints
-app.register_blueprint(usuarios)
+app.register_blueprint(usuarios_bp)
 app.register_blueprint(test_bp)
 app.register_blueprint(nivel_test)
 app.register_blueprint(test_resultado)

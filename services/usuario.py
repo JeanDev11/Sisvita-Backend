@@ -9,9 +9,9 @@ from schemas.usuario_schema import UsuarioSchema
 import jwt
 import datetime
 
-usuarios = Blueprint('usuarios', __name__)
+usuarios_bp = Blueprint('usuarios', __name__)
 
-@usuarios.route('/usuarios/insert', methods=['POST'])
+@usuarios_bp.route('/usuarios/insert', methods=['POST'])
 def insert_usuario():
     result = {}
     body = request.get_json()
@@ -101,7 +101,7 @@ def insert_usuario():
     result["msg"] = "Usuario registrado correctamente"
     return jsonify(result), 201
 
-@usuarios.route('/usuarios/getall', methods=['GET'])
+@usuarios_bp.route('/usuarios/getall', methods=['GET'])
 def get_usuariosAll():
     usuarios = Usuario.query.all()  # Obtener todos los usuarios desde la base de datos
 
@@ -110,7 +110,7 @@ def get_usuariosAll():
 
     return jsonify(usuarios_serializados), 200  # Devolver los usuarios serializados como JSON
 
-@usuarios.route('/usuarios/login', methods=['POST'])
+@usuarios_bp.route('/usuarios/login', methods=['POST'])
 def login_usuario():
     result = {}
     body = request.get_json()
@@ -147,6 +147,75 @@ def login_usuario():
     result["status_code"] = 200
     result["msg"] = "Inicio de sesión exitoso"
     return jsonify(result), 200
+
+@usuarios_bp.route('/usuarios/update', methods=['PUT'])
+def update_usuario():
+    result = {}
+    body = request.get_json()
+    token = request.headers.get('Authorization').split(" ")[1]
+    user_id = decode_token(token)
+
+    if not user_id:
+        result["status_code"] = 401
+        result["msg"] = "Token inválido o expirado"
+        return jsonify(result), 401
+
+    usuario = Usuario.query.filter_by(usuario_id=user_id).first()
+    if not usuario:
+        result["status_code"] = 404
+        result["msg"] = "Usuario no encontrado"
+        return jsonify(result), 404
+
+    contrasena_actual = body.get('contrasena_actual')
+    if not check_password_hash(usuario.contrasena, contrasena_actual):
+        result["status_code"] = 401
+        result["msg"] = "Contraseña actual incorrecta"
+        return jsonify(result), 401
+
+    # Solo actualizar los campos que no estén vacíos
+    nombres = body.get('nombres')
+    if nombres:
+        usuario.nombres = nombres
+
+    apellidos = body.get('apellidos')
+    if apellidos:
+        usuario.apellidos = apellidos
+
+    telefono = body.get('telefono')
+    if telefono:
+        usuario.telefono = telefono
+
+    fecha_nac = body.get('fecha_nac')
+    if fecha_nac:
+        usuario.fecha_nac = fecha_nac
+
+    sexo = body.get('sexo')
+    if sexo:
+        usuario.sexo = sexo
+
+    contrasena_nueva = body.get('contrasena_nueva')
+    if contrasena_nueva:
+        usuario.contrasena = generate_password_hash(contrasena_nueva)
+
+    db.session.commit()
+
+    result["status_code"] = 200
+    result["msg"] = "Datos actualizados correctamente"
+    return jsonify(result), 200
+
+@usuarios_bp.route('/usuarios/<int:usuario_id>', methods=['GET'])
+def get_Usuario(usuario_id):
+    usuario = Usuario.query.get_or_404(usuario_id)
+
+    result = {
+        'nombres': usuario.nombres,
+        'apellidos': usuario.apellidos,
+        'telefono': usuario.telefono,
+        'fecha_nac': usuario.fecha_nac.strftime('%Y-%m-%d'),
+        'sexo': usuario.sexo,
+    }
+    
+    return jsonify(result)
 
 
 # Define una clave secreta para firmar los tokens
